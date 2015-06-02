@@ -1,0 +1,31 @@
+{
+    "name": "pion/metno",
+    "version" : "1.0.0",
+    "description": "MET.no API library for fetching weather forecast",
+    "type" : "library",
+    "keywords" : ["MET.no", "weather", "forecast"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Martin Kluska",
+            "email": "martin.kluska@imakers.cz",
+            "homepage" : "http://imakers.cz"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php" : ">=5.3.0",
+        "ext-curl" : "*"
+    },
+    "autoload" : {
+        "classmap": [
+            "METnoFactory.php",
+            "METnoSymbol.php",
+            "METnoCustomSymbol.php",
+            "METnoPrecipitation.php",
+            "METnoForecast.php",
+            "METnoDay.php",
+            "METno.php"
+        ]
+    }
+}
