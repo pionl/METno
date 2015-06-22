@@ -97,7 +97,7 @@ class METno extends METnoFactory {
        
         foreach ($e->getTrace() as $trace) {
             $this->errorHTML        .="<p>";
-            if ($trace['class'] != '') {
+            if (isset($trace["class"]) && $trace['class'] != '') {
                 $this->errorHTML    .= $trace['class'];
                 $this->errorHTML    .= '->';
             }
@@ -106,13 +106,16 @@ class METno extends METnoFactory {
             $this->errorHTML        .= '(';
             if (!empty($trace["args"])) {
                 $first  = true;
+                
                 foreach($trace["args"] as $argument) {
-                    if ($first) {
-                        $first  = false;                        
-                    } else {
-                        $this->errorHTML.=",";
+                    if (is_string($argument)) {
+                        if ($first) {
+                            $first  = false;                        
+                        } else {
+                            $this->errorHTML.=",";
+                        }
+                        $this->errorHTML.= $argument;
                     }
-                    $this->errorHTML.= $argument;
                 }
             }
             $this->errorHTML        .= ');<br />';
@@ -261,8 +264,11 @@ class METno extends METnoFactory {
                  * Container with time entries by day 
                  */
                 $forecastByDay = array();
-
+                $previousDay = null;
+                $lastForeCast = null;
+                
                 foreach ($xml->product->time as $forecast) {
+                    
                     $forecastAttributes                     = $forecast->attributes();
                     if (isset($forecast->location)) {
                         
@@ -275,8 +281,27 @@ class METno extends METnoFactory {
                                 $fromDate                           = self::getDate($fromValue);
                                 $fromHour                           = self::getHour($fromValue);
                                 $toHour                             = self::getHour($toValue);
-                                
+                               
+                        
                                 if (!is_bool($fromDate) && !is_bool($toHour) && !is_bool($fromHour)) {
+                                    
+                                    // check the previus day data if have all
+                                    if (!is_null($previousDay) && $previousDay != $fromDate) {
+                                        $hasData = false;
+                                        
+                                         foreach ($forecastByDay[$previousDay] as $hour) {
+                                             if (is_object($hour["detail"])) {
+                                                 $hasData = true;
+                                             }
+                                         }
+                                         
+                                         if (!$hasData) {
+                                             // add to last hour the forecast location
+                                             $hour = key($forecastByDay[$previousDay]);
+                                             $forecastByDay[$previousDay][$hour]["detail"] = $lastForeCast->location;
+                                         }
+                                    }
+                    
                                     /**
                                      * Prepare containers by date and then for hour
                                      */
@@ -301,8 +326,7 @@ class METno extends METnoFactory {
                                     /**
                                      * Detect if the element is weather info or
                                      * symbol info and insert it into the correct containe
-                                     */                                    
-                                    
+                                     */
                                     if ($fromHour == $toHour) {                                        
                                         $forecastByDay[$fromDate][$toHour]["detail"]        = $forecast->location;
                                     } else {
@@ -331,7 +355,11 @@ class METno extends METnoFactory {
                                                                                      self::getAttributeValue($precipitationAttributes, "minvalue",1), 
                                                                                      self::getAttributeValue($precipitationAttributes, "maxvalue",1))
                                         );
+                                        
                                     }
+                                    
+                                    $previousDay = $fromDate;
+                                    $lastForeCast = $forecast;
                                     
                                 } else throw new Exception("The XML is invalid - the date detection failed", METno::XML_INVALID);  
                             } else throw new Exception("The XML is invalid - the from and to attribute is invalid", METno::XML_INVALID);
@@ -339,7 +367,14 @@ class METno extends METnoFactory {
                     } else throw new Exception("The XML is invalid - location node is missing", METno::XML_INVALID); 
                 }
                 
-                if (!empty($forecastByDay)) {                    
+                $previousDay = null;
+                $forecast = null;
+                
+                if (!empty($forecastByDay)) {      
+                    // sort by date, the xml can return today date before yesterday
+                    ksort($forecastByDay);
+                    
+                    // Create days
                     foreach ($forecastByDay as $date => $forecast) {
                         $this->forecastByDay[$date] = new METnoDay($date, $forecast,$this);
                     }

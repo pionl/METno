@@ -116,11 +116,12 @@ class METnoDay extends METnoForecast {
         $startHour                  = 0; // start from the 0 hour
         
         if ($this->today) { // fill only hours that will be in future, start on first filled hour
-			$startHourKeys 	= array_keys($cleanForecastByHour);
-            	$startHour              = reset($startHourKeys);
+            $startHourKeys  = array_keys($cleanForecastByHour);
+                $startHour              = reset($startHourKeys);
         }
         
         for ($hour = $startHour; $hour < 24; $hour++) {
+            
             if (!isset($cleanForecastByHour[$hour])) {
                 /** 
                  * Search for the closest forecast and duplicate the information for the hour
@@ -130,6 +131,7 @@ class METnoDay extends METnoForecast {
                 if (is_bool($hourForecast)) {
                     if (is_object($this->metNo)) {
                         $this->metNo->error(new Exception("Could not find nereast forecast, this should not happen.", METno::FORECAST_INVALID));
+                        continue;
                     } else {
                         die("Could not find nereast forecast, this should not happen. Code: ".METno::FORECAST_INVALID);
                     }
@@ -186,14 +188,14 @@ class METnoDay extends METnoForecast {
         } else {            
             if (METnoFactory::isDayForecastByHighestTemp()) {
                 $weatherToCopy  = $this->hourForecastForHighestTemperature;
-            } else {
+            } else if (isset($this->hourWeather[METnoFactory::getHourForDayForecast()])) {
                 $weatherToCopy  = $this->hourWeather[METnoFactory::getHourForDayForecast()];
             }
         }
         /**
          * Copy the properties of the forecast to the day forecast properities
          */
-        if (is_object($weatherToCopy)) {
+        if (isset($weatherToCopy) && is_object($weatherToCopy)) {
             foreach ($weatherToCopy as $property => $value) {
                 if ($property != "parent") {
                     $this->$property     = $value;

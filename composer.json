@@ -1,6 +1,6 @@
 {
     "name": "pion/metno",
-    "version" : "1.0.0",
+    "version" : "1.0.1",
     "description": "MET.no API library for fetching weather forecast",
     "type" : "library",
     "keywords" : ["MET.no", "weather", "forecast"],

@@ -15,6 +15,13 @@ Add to composer require
 
 	"pion/metno": ">=1.0.0"
 
+## METnoDay
+
+This class represents the forecast for the day. It has several properties you can access. By default the symbol and values is taken from the highest temperature, you can also set the hour which should be used.
+
+The day has also forecast for every day (represented by METnoForecast class). When API has missing hour, the parsing will ensure that the hour will be filled by previous/next value.
+
+Also you can access night forecast, hour forecast for highest or lowest temperature.
 
 ## Custom settings
 
