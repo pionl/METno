@@ -15,6 +15,10 @@ Add to composer require
 
 	"pion/metno": ">=1.0.0"
 
+For best clean of cached xml files use a cron with sh script like this (delete files older than 1 day):
+
+	find _METcache/ -mtime +1 -type f -delete
+
 ## METnoDay
 
 This class represents the forecast for the day. It has several properties you can access. By default the symbol and values is taken from the highest temperature, you can also set the hour which should be used.
