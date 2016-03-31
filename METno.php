@@ -443,7 +443,7 @@ class METno extends METnoFactory {
                 $cacheSubFolder     = date("Ymd",strtotime("-1 DAY"))."/";
                     
                 if (is_dir(self::$cacheDir.$cacheSubFolder)) {
-                    @unlink(self::$cacheDir.$cacheSubFolder);
+                    $this->rmdirRecursively(self::$cacheDir.$cacheSubFolder);
                 }
             }
             
@@ -455,6 +455,19 @@ class METno extends METnoFactory {
         } catch (Exception $e) {
             return $this->error($e);
         }
+    }
+
+    /**
+     * Removes all the contents of dir
+     * @param $dir
+     * @return bool
+     */
+    public function rmdirRecursively($dir) {
+        $files = array_diff(scandir($dir), array('.', '..'));
+        foreach ($files as $file) {
+            (is_dir("$dir/$file")) ? rmdirRecursively("$dir/$file") : @unlink("$dir/$file");
+        }
+        return @rmdir($dir);
     }
     
     /**
