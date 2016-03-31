@@ -429,21 +429,21 @@ class METno extends METnoFactory {
                 fwrite($cache, $apiResponse);
                 fclose($cache);  
                 
+                // remove the previous hour
                 $previousHour   = date("H",strtotime("-1 HOUR"));
                 
-                if ($previousHour == 23) {
-                    $cacheSubFolder     = date("Ymd",strtotime("-1 DAY"))."/";
-                    
-                    if (is_dir(self::$cacheDir.$cacheSubFolder)) {
-                        @unlink(self::$cacheDir.$cacheSubFolder);
-                    }
-                } else {
-                
-                    $cacheFileOld   = self::$cacheDir.$cacheSubFolder.$this->apiParameters."-".$previousHour.".xml";
+                $cacheFileOld   = self::$cacheDir.$cacheSubFolder.$this->apiParameters."-".$previousHour.".xml";
 
-                    if (file_exists($cacheFileOld)) {
-                        @unlink($cacheFileOld);
-                    }
+                if (file_exists($cacheFileOld)) {
+                    @unlink($cacheFileOld);
+                }
+
+                // remove the previous day
+                
+                $cacheSubFolder     = date("Ymd",strtotime("-1 DAY"))."/";
+                    
+                if (is_dir(self::$cacheDir.$cacheSubFolder)) {
+                    @unlink(self::$cacheDir.$cacheSubFolder);
                 }
             }
             
