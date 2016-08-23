@@ -10,7 +10,7 @@
  * @uses METnoForecast Description
  */
 
-class METnoSymbol {
+class METnoSymbol implements JsonSerializable {
     /**
      * For detection of day progress (night)
      * @var METnoForecast 
@@ -63,5 +63,20 @@ class METnoSymbol {
     public function __toString() {
         return $this->getUrl();
     }
+
+    /**
+     * @return array
+     */
+    function jsonSerialize()
+    {
+        return array(
+            "id" => $this->getNumber(),
+            "name" => $this->getName(),
+            "is" => array(
+                "night" => $this->isNight()
+            ),
+            "url" => $this->getUrl()
+        );
+    }
+
 }
-?>

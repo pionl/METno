@@ -38,7 +38,7 @@ if ($forecastBrno->isSuccess()) {
 METnoFactory::setSymbolClass("METnoCustomSymbol");
 
 $forecastBrnoCustom   = METnoFactory::getForecastByLatLon(49.199205, 16.598866);
-$forecast = $forecastBrno2->getForecastForXDays(5);
+$forecast = $forecastBrnoCustom->getForecastForXDays(5);
 
 foreach ($forecast as $day) {
 	$iconPath = "img/weather/".$day->getSymbol();
@@ -46,4 +46,6 @@ foreach ($forecast as $day) {
 	$date = $day->getDate();
 }
 
-?>
+
+// convert to json
+echo json_encode($forecast);

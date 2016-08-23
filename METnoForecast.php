@@ -8,7 +8,7 @@
  * 
  */
 
-class METnoForecast {
+class METnoForecast implements JsonSerializable {
     private $parent                     = false;
     
     /**
@@ -39,7 +39,7 @@ class METnoForecast {
     
     /**
      * Precipitation (srážky) in mm
-     * @var type 
+     * @var int
      */
     protected $precipitation            = 0;
     
@@ -190,7 +190,146 @@ class METnoForecast {
     public function getSymbol() {
         return $this->symbol;
     }
-    
-    
+
+    /**
+     * @return decimal
+     */
+    public function getWindSpeed()
+    {
+        return $this->windSpeed;
+    }
+
+    /**
+     * @return bool|int|string
+     */
+    public function getWindDegrees()
+    {
+        return $this->windDegrees;
+    }
+
+    /**
+     * @return bool|int|string
+     */
+    public function getWindOrientation()
+    {
+        return $this->windOrientation;
+    }
+
+    /**
+     * @return type
+     */
+    public function getPrecipitation()
+    {
+        return $this->precipitation;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPrecipitationInHours()
+    {
+        return $this->precipitationInHours;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHumidity()
+    {
+        return $this->humidity;
+    }
+
+    /**
+     * @return type
+     */
+    public function getPressure()
+    {
+        return $this->pressure;
+    }
+
+    /**
+     * @return bool|int|string
+     */
+    public function getPressureUnit()
+    {
+        return $this->pressureUnit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFog()
+    {
+        return $this->fog;
+    }
+
+    /**
+     * @return bool|int|string
+     */
+    public function getCloudiness()
+    {
+        return $this->cloudiness;
+    }
+
+    /**
+     * @return bool|int|string
+     */
+    public function getLowClouds()
+    {
+        return $this->lowClouds;
+    }
+
+    /**
+     * @return bool|int|string
+     */
+    public function getMediumClouds()
+    {
+        return $this->mediumClouds;
+    }
+
+    /**
+     * @return bool|int|string
+     */
+    public function getHighClouds()
+    {
+        return $this->highClouds;
+    }
+
+    /**
+     * @return mixed
+     */
+    function jsonSerialize()
+    {
+        return array(
+            "is" => array(
+                "night" => $this->isNight()
+            ),
+            "symbol" => $this->getSymbol(),
+            "temperature" => $this->getTemperature(),
+            "hour" => $this->getHour(),
+            "wind" => array(
+                "speed" => $this->getWindSpeed(),
+                "degrees" => $this->getWindDegrees(),
+                "orientation" => $this->getWindOrientation()
+            ),
+            "percipitation" => array(
+                "first" => $this->precipitation,
+                "inHours" => $this->getPrecipitationInHours()
+            ),
+            "humadity" => $this->getHumidity(),
+            "pressure" => array(
+                "unit" => $this->getPressureUnit(),
+                "value" => $this->getPressure()
+            ),
+            "fog" => $this->getFog(),
+            "clouds" => array(
+                "cloudiness" => $this->getCloudiness(),
+                "low" => $this->getLowClouds(),
+                "medium" => $this->getMediumClouds(),
+                "high" => $this->getHighClouds()
+            )
+        );
+    }
+
+
 }
-?>
