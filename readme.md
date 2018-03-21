@@ -13,7 +13,7 @@ You can install this library via composer or download the classes and to load al
 
 Add to composer require
 
-	"pion/metno": ">=1.0.0"
+	"neogenia/metno": ">=1.0.0"
 
 For best clean of cached xml files use a cron with sh script like this (delete files older than 1 day):
 
