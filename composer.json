@@ -1,5 +1,5 @@
 {
-    "name": "pion/metno",
+    "name": "neogenia/metno",
     "version" : "1.0.1",
     "description": "MET.no API library for fetching weather forecast",
     "type" : "library",
@@ -7,9 +7,9 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Martin Kluska",
-            "email": "martin.kluska@imakers.cz",
-            "homepage" : "http://imakers.cz"
+            "name": "Vitezslav Ondracek",
+            "email": "vitezslav.ondracek@neogenia.cz",
+            "homepage" : "http://www.neogenia.cz"
         }
     ],
     "minimum-stability": "dev",
