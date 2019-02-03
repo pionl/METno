@@ -39,9 +39,9 @@ class METno extends METnoFactory {
      * @param <int|boolean>     $seeLevel - meters
      */
     public function __construct($lat, $lon, $seeLevel = false) {
-        $this->apiParameters       .= "lat=$lat;lon=$lon";
+        $this->apiParameters       .= "lat=$lat&lon=$lon";
         if (!is_bool($seeLevel)) {
-            $this->apiParameters   .= "&mls=$seeLevel";
+            $this->apiParameters   .= "&msl=$seeLevel";
         }
     }
 
