@@ -19,7 +19,7 @@
  */
 class METno extends METnoFactory {
 
-    protected $apiRequest       = "https://api.met.no/weatherapi/locationforecast/1.9/?";
+    protected $apiRequest       = "https://api.met.no/weatherapi/locationforecast/2.0/classic.xml?";
     protected $apiParameters    = "";
 
     /**
